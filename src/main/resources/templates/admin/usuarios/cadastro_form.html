@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html th:replace="~{adminlte3 :: layout (~{::title}, ~{::main}, _, _)}">
+<head>
+  <title>Cadastro de Usuário</title>
+</head>
+<body>
+  <main>
+    <div class="row">
+      <div class="col">
+        <div class="card card-primary">
+          <div class="card-header">
+            <div class="card-title">Cadastro de Usuário</div>
+          </div>
+          <div class="card-body">
+            <form method="POST" th:object="${cadastroForm}">
+              <div class="row">
+                <div class="col">
+                  <div class="form-group">
+                    <label for="nome">Nome</label>
+                    <input type="text" class="form-control" th:field="*{nome}" required>
+                    <ul>
+                      <li class="text-danger" th:each="erro : ${#fields.errors('nome')}" th:text="${erro}"></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <label for="email">E-mail</label>
+                  <input type="email" class="form-control" th:field="*{email}" required>
+                  <ul>
+                    <li class="text-danger" th:each="erro : ${#fields.errors('email')}" th:text="${erro}"></li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-12 col-md-6">
+                  <label for="senha">Senha</label>
+                  <input type="password" class="form-control" th:field="*{senha}" required>
+                  <ul>
+                    <li class="text-danger" th:each="erro : ${#fields.errors('senha')}" th:text="${erro}"></li>
+                  </ul>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                  <label for="confirmacaoSenha">Confirmação de senha</label>
+                  <input type="password" class="form-control" th:field="*{confirmacaoSenha}" required>
+                  <ul>
+                    <li class="text-danger" th:each="erro : ${#fields.errors('confirmacaoSenha')}" th:text="${erro}"></li>
+                  </ul>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-success">Salvar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

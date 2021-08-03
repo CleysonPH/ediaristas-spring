@@ -17,29 +17,29 @@ public class AdminServicoService {
 
     private ServicoService servicoService;
 
-    private static final AdminServicoMapper ADMIN_SERVICO_MAPPER = AdminServicoMapper.INSTANCE;
+    private static final AdminServicoMapper MAPPER = AdminServicoMapper.INSTANCE;
 
     public List<ServicoResumo> buscarTodosResumidos() {
         return servicoService.buscarTodos()
             .stream()
-            .map(ADMIN_SERVICO_MAPPER::modelParaResumo)
+            .map(MAPPER::modelParaResumo)
             .collect(Collectors.toList());
     }
 
     public ServicoForm buscarFormPorId(Long id) {
         var servico = servicoService.buscarPorId(id);
 
-        return ADMIN_SERVICO_MAPPER.modelParaForm(servico);
+        return MAPPER.modelParaForm(servico);
     }
 
     public void cadastrar(ServicoForm form) {
-        var servico = ADMIN_SERVICO_MAPPER.formParaModel(form);
+        var servico = MAPPER.formParaModel(form);
 
         servicoService.cadastrar(servico);
     }
 
     public void editar(ServicoForm form, Long id) {
-        var servico = ADMIN_SERVICO_MAPPER.formParaModel(form);
+        var servico = MAPPER.formParaModel(form);
 
         servicoService.editar(servico, id);
     }

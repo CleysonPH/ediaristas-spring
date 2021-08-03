@@ -21,7 +21,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ServicoController {
 
-    private AdminServicoService adminServicoService;
+    private AdminServicoService servicoService;
 
     @GetMapping("/cadastrar")
     public ModelAndView cadastrar() {
@@ -38,7 +38,7 @@ public class ServicoController {
             return "admin/servicos/form";
         }
 
-        adminServicoService.cadastrar(form);
+        servicoService.cadastrar(form);
 
         return "redirect:/admin/servicos";
     }
@@ -47,7 +47,7 @@ public class ServicoController {
     public ModelAndView listar() {
         var modelAndView = new ModelAndView("admin/servicos/lista");
 
-        modelAndView.addObject("servicos", adminServicoService.buscarTodosResumidos());
+        modelAndView.addObject("servicos", servicoService.buscarTodosResumidos());
 
         return modelAndView;
     }
@@ -56,7 +56,7 @@ public class ServicoController {
     public ModelAndView editar(@PathVariable Long id) {
         var modelAndView = new ModelAndView("admin/servicos/form");
 
-        modelAndView.addObject("form", adminServicoService.buscarFormPorId(id));
+        modelAndView.addObject("form", servicoService.buscarFormPorId(id));
 
         return modelAndView;
     }
@@ -67,14 +67,14 @@ public class ServicoController {
             return "admin/servicos/form";
         }
 
-        adminServicoService.editar(form, id);
+        servicoService.editar(form, id);
 
         return "redirect:/admin/servicos";
     }
 
     @GetMapping("/{id}/excluir")
     public String excluir(@PathVariable Long id) {
-        adminServicoService.excluirPorId(id);
+        servicoService.excluirPorId(id);
 
         return "redirect:/admin/servicos";
     }
