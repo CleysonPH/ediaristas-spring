@@ -2,6 +2,7 @@ package br.com.treinaweb.ediaristas.usuarios.services;
 
 import java.util.List;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.treinaweb.ediaristas.core.service.IService;
@@ -16,6 +17,8 @@ public class UsuarioService implements IService<Usuario, Long> {
 
     private UsuarioRepository usuarioRepository;
 
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public List<Usuario> buscarTodos() {
         return usuarioRepository.findAll();
@@ -28,6 +31,9 @@ public class UsuarioService implements IService<Usuario, Long> {
 
     @Override
     public Usuario cadastrar(Usuario usuario) {
+        var senhaHash = passwordEncoder.encode(usuario.getSenha());
+        usuario.setSenha(senhaHash);
+
         return usuarioRepository.save(usuario);
     }
 
@@ -35,7 +41,11 @@ public class UsuarioService implements IService<Usuario, Long> {
     public Usuario editar(Usuario usuario, Long id) {
         verificaSeExisteERetorna(id);
 
+        var senhaHash = passwordEncoder.encode(usuario.getSenha());
+        usuario.setSenha(senhaHash);
+
         usuario.setId(id);
+
         return usuarioRepository.save(usuario);
     }
 
