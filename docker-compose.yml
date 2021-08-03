@@ -1,0 +1,17 @@
+version: '3.1'
+services:
+  db:
+    image: mysql
+    container_name: ediaristas_spring_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ediaristas
+      MYSQL_USER: ediaristas_user
+      MYSQL_PASSWORD: ediaristas_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - ediaristas_data:/var/lib/mysql
+
+volumes:
+  ediaristas_data:
