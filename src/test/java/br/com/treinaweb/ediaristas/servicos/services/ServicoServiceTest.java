@@ -2,8 +2,8 @@ package br.com.treinaweb.ediaristas.servicos.services;
 
 import static org.mockito.Mockito.*;
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.hamcrest.MatcherAssert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -55,12 +55,8 @@ public class ServicoServiceTest {
         var mensagemEsperada = "Serviço com ID 1 não encontrado";
         when(servicoRepository.findById(id)).thenReturn(Optional.empty());
 
-        try {
-            servicoService.buscarPorId(id);
-            fail("Deveria lançar uma exceção do tipo ServicoNaoEncontradoException com a mensagem " + mensagemEsperada);
-        } catch (ServicoNaoEncontradoException e) {
-            assertThat(e.getMessage(), is(equalTo(mensagemEsperada)));
-        }
+        var exception = assertThrows(ServicoNaoEncontradoException.class, () -> servicoService.buscarPorId(id));
+        assertThat(exception.getMessage(), is(equalTo(mensagemEsperada)));
     }
 
     @Test
@@ -94,12 +90,10 @@ public class ServicoServiceTest {
         var mensagemEsperada = "Serviço com ID 1 não encontrado";
         when(servicoRepository.findById(id)).thenReturn(Optional.empty());
 
-        try {
-            servicoService.editar(servicoASerEditado, id);
-            fail("Deveria lançar uma exceção do tipo ServicoNaoEncontradoException com a mensagem " + mensagemEsperada);
-        } catch (ServicoNaoEncontradoException e) {
-            assertThat(e.getMessage(), is(equalTo(mensagemEsperada)));
-        }
+        var exception = assertThrows(ServicoNaoEncontradoException.class,
+            () -> servicoService.editar(servicoASerEditado, id)
+        );
+        assertThat(exception.getMessage(), is(equalTo(mensagemEsperada)));
     }
 
     @Test
@@ -108,12 +102,10 @@ public class ServicoServiceTest {
         var mensagemEsperada = "Serviço com ID 1 não encontrado";
         when(servicoRepository.findById(id)).thenReturn(Optional.empty());
 
-        try {
-            servicoService.excluirPorId(id);
-            fail("Deveria lançar uma exceção do tipo ServicoNaoEncontradoException com a mensagem " + mensagemEsperada);
-        } catch (ServicoNaoEncontradoException e) {
-            assertThat(e.getMessage(), is(equalTo(mensagemEsperada)));
-        }
+        var exception = assertThrows(ServicoNaoEncontradoException.class,
+            () -> servicoService.excluirPorId(id)
+        );
+        assertThat(exception.getMessage(), is(equalTo(mensagemEsperada)));
     }
 
     @Test

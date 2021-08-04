@@ -2,7 +2,7 @@ package br.com.treinaweb.ediaristas.servicos.admin.services;
 
 import static org.mockito.Mockito.*;
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.*;
 
 import java.util.List;
 

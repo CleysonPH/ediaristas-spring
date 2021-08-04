@@ -5,15 +5,16 @@ import static org.mockito.Mockito.*;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.MatcherAssert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.treinaweb.ediaristas.servicos.admin.dtos.ServicoForm;
 import br.com.treinaweb.ediaristas.servicos.admin.services.AdminServicoService;
@@ -26,6 +27,12 @@ public class ServicoControllerTest {
 
     @Mock
     private AdminServicoService adminServicoService;
+
+    @Mock
+    private RedirectAttributes redirectAttributes;
+
+    @Mock
+    private BindingResult bindingResult;
 
     @InjectMocks
     private ServicoController servicoController;
@@ -49,9 +56,8 @@ public class ServicoControllerTest {
     @Test
     void quandoActionPOSTCadastrarForChamadaComServicoFormValidoDeveRedirecionarParaListaDeServicos() {
         var servicoFormEsperado = ServicoFormBuilder.builder().build().buildServicoForm();
-        var bindResultEsperado = new BeanPropertyBindingResult(servicoFormEsperado, "form");
 
-        var retorno = servicoController.cadastrar(servicoFormEsperado, bindResultEsperado);
+        var retorno = servicoController.cadastrar(servicoFormEsperado, bindingResult, redirectAttributes);
 
         assertThat(retorno, is(equalTo("redirect:/admin/servicos")));
     }
@@ -59,9 +65,8 @@ public class ServicoControllerTest {
     @Test
     void quandoActionPOSTCadastrarForChamadaComServicoFormValidoDeveExecutarMetodoCadastrarDeAdminServicoService() {
         var servicoFormEsperado = ServicoFormBuilder.builder().build().buildServicoForm();
-        var bindResultEsperado = new BeanPropertyBindingResult(servicoFormEsperado, "form");
 
-        servicoController.cadastrar(servicoFormEsperado, bindResultEsperado);
+        servicoController.cadastrar(servicoFormEsperado, bindingResult, redirectAttributes);
 
         verify(adminServicoService, times(1)).cadastrar(servicoFormEsperado);
     }
@@ -69,10 +74,9 @@ public class ServicoControllerTest {
     @Test
     void quandoActionPOSTCadastrarForChamadaComServicoFormInvalidoDeveChamarAViewForm() {
         var servicoFormEsperado = ServicoFormBuilder.builder().build().buildServicoForm();
-        var bindResultEsperado = new BeanPropertyBindingResult(servicoFormEsperado, "form");
-        bindResultEsperado.rejectValue("qtdHoras", "javax.validation.constraints.PositiveOrZero");
+        when(bindingResult.hasErrors()).thenReturn(true);
 
-        var retorno = servicoController.cadastrar(servicoFormEsperado, bindResultEsperado);
+        var retorno = servicoController.cadastrar(servicoFormEsperado, bindingResult, redirectAttributes);
 
         assertThat(retorno, is(equalTo("admin/servicos/form")));
     }
@@ -121,9 +125,8 @@ public class ServicoControllerTest {
     void quandoActionPOSTEditarForChamadaComServicoFormValidoDeveRedirecionarParaListaDeServicos() {
         var id = 1L;
         var servicoFormEsperado = ServicoFormBuilder.builder().build().buildServicoForm();
-        var bindResultEsperado = new BeanPropertyBindingResult(servicoFormEsperado, "form");
 
-        var retorno = servicoController.editar(id, servicoFormEsperado, bindResultEsperado);
+        var retorno = servicoController.editar(id, servicoFormEsperado, bindingResult, redirectAttributes);
 
         assertThat(retorno, is(equalTo("redirect:/admin/servicos")));
     }
@@ -132,9 +135,8 @@ public class ServicoControllerTest {
     void quandoActionPOSTEditarForChamadaComServicoFormValidoDeveExecutarMetodoEditarDeAdminServicoService() {
         var id = 1L;
         var servicoFormEsperado = ServicoFormBuilder.builder().build().buildServicoForm();
-        var bindResultEsperado = new BeanPropertyBindingResult(servicoFormEsperado, "form");
 
-        servicoController.editar(id, servicoFormEsperado, bindResultEsperado);
+        servicoController.editar(id, servicoFormEsperado, bindingResult, redirectAttributes);
 
         verify(adminServicoService, times(1)).editar(servicoFormEsperado, id);
     }
@@ -143,17 +145,16 @@ public class ServicoControllerTest {
     void quandoActionPOSTEditarForChamadaComServicoFormInvalidoDeveChamarAViewForm() {
         var id = 1L;
         var servicoFormEsperado = ServicoFormBuilder.builder().build().buildServicoForm();
-        var bindResultEsperado = new BeanPropertyBindingResult(servicoFormEsperado, "form");
-        bindResultEsperado.rejectValue("qtdHoras", "javax.validation.constraints.PositiveOrZero");
+        when(bindingResult.hasErrors()).thenReturn(true);
 
-        var retorno = servicoController.editar(id, servicoFormEsperado, bindResultEsperado);
+        var retorno = servicoController.editar(id, servicoFormEsperado, bindingResult, redirectAttributes);
 
         assertThat(retorno, is(equalTo("admin/servicos/form")));
     }
 
     @Test
     void quandoActionGETExcluirForChamadaDeveChamarMetodoExcluirPorIdDeAdminServicoService() {
-        servicoController.excluir(1L);
+        servicoController.excluir(1L, redirectAttributes);
 
         verify(adminServicoService, times(1)).excluirPorId(1L);
     }
