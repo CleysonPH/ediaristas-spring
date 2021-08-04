@@ -17,7 +17,7 @@ public class UsuarioSenhaValidator implements Validator {
         var usuario = (UsuarioSenha) target;
 
         if (!usuario.getSenha().equals(usuario.getConfirmacaoSenha())) {
-            errors.rejectValue("confirmacaoSenha", "auth.validation.senhasNaoConferem");
+            errors.rejectValue("confirmacaoSenha", "br.com.treinaweb.ediaristas.auth.validator.senhasNaoConferem");
         }
     }
 

@@ -1,5 +1,7 @@
 package br.com.treinaweb.ediaristas.usuarios.admin.controllers;
 
+import java.security.Principal;
+
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -12,11 +14,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.treinaweb.ediaristas.auth.validators.UsuarioSenhaValidator;
+import br.com.treinaweb.ediaristas.dtos.FlashMessage;
+import br.com.treinaweb.ediaristas.usuarios.admin.dtos.AlterarSenhaFrom;
 import br.com.treinaweb.ediaristas.usuarios.admin.dtos.UsuarioCadastroForm;
 import br.com.treinaweb.ediaristas.usuarios.admin.dtos.UsuarioEdicaoForm;
 import br.com.treinaweb.ediaristas.usuarios.admin.services.AdminUsuarioService;
+import br.com.treinaweb.ediaristas.usuarios.exceptions.SenhaIncorretaException;
 import lombok.AllArgsConstructor;
 
 @Controller
@@ -26,7 +32,7 @@ public class UsuarioController {
 
     private AdminUsuarioService usuarioService;
 
-    @InitBinder("cadastroForm")
+    @InitBinder({"cadastroForm", "alterarSenhaForm"})
     private void initBinder(WebDataBinder binder) {
         binder.addValidators(new UsuarioSenhaValidator());
     }
@@ -87,6 +93,37 @@ public class UsuarioController {
         usuarioService.excluirPorId(id);
 
         return "redirect:/admin/usuarios";
+    }
+
+    @GetMapping("/editar-senha")
+    public ModelAndView editarSenha() {
+        var modelAndView = new ModelAndView("/admin/usuarios/editar_senha");
+
+        modelAndView.addObject("alterarSenhaForm", new AlterarSenhaFrom());
+
+        return modelAndView;
+    }
+
+    @PostMapping("editar-senha")
+    public String editarSenha(
+        @Valid @ModelAttribute("alterarSenhaForm") AlterarSenhaFrom alterarSenhaFrom,
+        BindingResult resultado,
+        Principal principal,
+        RedirectAttributes attrs
+    ) {
+        if (resultado.hasErrors()) {
+            return "/admin/usuarios/editar_senha";
+        }
+
+        try {
+            usuarioService.editarSenha(alterarSenhaFrom, principal);
+        } catch (SenhaIncorretaException e) {
+            resultado.rejectValue("senhaAntiga", "br.com.treinaweb.ediaristas.senhaAntiga.incorreta");
+        }
+
+        attrs.addFlashAttribute("alert", new FlashMessage("alert-success", "Senha alterada com sucesso"));
+
+        return "/admin/usuarios/editar_senha";
     }
 
 }

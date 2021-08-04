@@ -57,9 +57,18 @@ public class UsuarioService implements IService<Usuario, Long> {
 
     }
 
+    public Usuario buscarPorEmail(String email) {
+        var mensagemDeErro = String.format("Usuário com e-mail \"%s\" não encontrado", email);
+
+        return usuarioRepository.findByEmail(email)
+            .orElseThrow(() -> new UsuarioNaoEncontradoException(mensagemDeErro));
+    }
+
     private Usuario verificaSeExisteERetorna(Long id) {
+        var mensagemDeErro = String.format("Usuário com ID %d não encontrado", id);
+
         return usuarioRepository.findById(id)
-            .orElseThrow(() -> new UsuarioNaoEncontradoException(id));
+            .orElseThrow(() -> new UsuarioNaoEncontradoException(mensagemDeErro));
     }
 
 }
