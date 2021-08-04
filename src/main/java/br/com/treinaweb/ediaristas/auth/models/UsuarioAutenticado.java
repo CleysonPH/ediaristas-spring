@@ -1,4 +1,4 @@
-package br.com.treinaweb.ediaristas.auth.model;
+package br.com.treinaweb.ediaristas.auth.models;
 
 import java.util.Collection;
 
