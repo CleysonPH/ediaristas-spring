@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html th:replace="~{adminlte3 :: layout (~{::title}, ~{::main}, _, ~{::scripts})}">
+<html th:replace="~{adminlte3 :: layout (~{::title}, ~{::main}, _, _)}">
 <head>
   <title>Formulário de Serviço</title>
 </head>
@@ -28,7 +28,7 @@
                 <div class="col-md-6 col-sm-12">
                   <div class="form-group">
                     <label for="valorMinimo">Valor Mínimo</label>
-                    <input type="text" class="form-control money" th:field="*{valorMinimo}" required min="0" step="0.01">
+                    <input type="number" class="form-control money" th:field="*{valorMinimo}" required min=0 step=0.01>
                     <ul>
                       <li class="text-danger" th:each="erro : ${#fields.errors('valorMinimo')}" th:text="${erro}"></li>
                     </ul>
@@ -70,7 +70,7 @@
                 <div class="col-md-6 col-sm 12">
                   <div class="form-group">
                     <label for="valorQuarto">Valor Quarto</label>
-                    <input type="text" class="form-control money" th:field="*{valorQuarto}" required min="0" step="0.01">
+                    <input type="number" class="form-control money" th:field="*{valorQuarto}" required min=0 step=0.01>
                     <ul>
                       <li class="text-danger" th:each="erro : ${#fields.errors('valorQuarto')}" th:text="${erro}"></li>
                     </ul>
@@ -91,7 +91,7 @@
                 <div class="col-md-6 col-sm 12">
                   <div class="form-group">
                     <label for="valorSala">Valor Sala</label>
-                    <input type="text" class="form-control money" th:field="*{valorSala}" required min="0" step="0.01">
+                    <input type="number" class="form-control money" th:field="*{valorSala}" required min=0 step=0.01>
                     <ul>
                       <li class="text-danger" th:each="erro : ${#fields.errors('valorSala')}" th:text="${erro}"></li>
                     </ul>
@@ -112,7 +112,7 @@
                 <div class="col-md-6 col-sm 12">
                   <div class="form-group">
                     <label for="valorBanheiro">Valor Banheiro</label>
-                    <input type="text" class="form-control money" th:field="*{valorBanheiro}" required min="0" step="0.01">
+                    <input type="number" class="form-control money" th:field="*{valorBanheiro}" required min=0 step=0.01>
                     <ul>
                       <li class="text-danger" th:each="erro : ${#fields.errors('valorBanheiro')}" th:text="${erro}"></li>
                     </ul>
@@ -133,7 +133,7 @@
                 <div class="col-md-6 col-sm 12">
                   <div class="form-group">
                     <label for="valorCozinha">Valor Cozinha</label>
-                    <input type="text" class="form-control money" th:field="*{valorCozinha}" required min="0" step="0.01">
+                    <input type="number" class="form-control money" th:field="*{valorCozinha}" required min=0 step=0.01>
                     <ul>
                       <li class="text-danger" th:each="erro : ${#fields.errors('valorCozinha')}" th:text="${erro}"></li>
                     </ul>
@@ -154,7 +154,7 @@
                 <div class="col-md-6 col-sm 12">
                   <div class="form-group">
                     <label for="valorQuintal">Valor Quintal</label>
-                    <input type="text" class="form-control money" th:field="*{valorQuintal}" required min="0" step="0.01">
+                    <input type="number" class="form-control money" th:field="*{valorQuintal}" required min=0 step=0.01>
                     <ul>
                       <li class="text-danger" th:each="erro : ${#fields.errors('valorQuintal')}" th:text="${erro}"></li>
                     </ul>
@@ -175,7 +175,7 @@
                 <div class="col-md-6 col-sm 12">
                   <div class="form-group">
                     <label for="valorOutros">Valor Outros</label>
-                    <input type="text" class="form-control money" th:field="*{valorOutros}" required min="0" step="0.01">
+                    <input type="number" class="form-control money" th:field="*{valorOutros}" required min=0 step=0.01>
                     <ul>
                       <li class="text-danger" th:each="erro : ${#fields.errors('valorOutros')}" th:text="${erro}"></li>
                     </ul>
@@ -213,14 +213,5 @@
       </div>
     </div>
   </main>
-
-  <th:block th:fragment="scripts">
-    <script th:src="@{/plugins/jquery-mask/jquery.mask.min.js}"></script>
-    <script>
-      $(document).ready(function() {
-        $(".money").mask("000,00", {reverse: true})
-      })
-    </script>
-  </th:block>
 </body>
 </html>

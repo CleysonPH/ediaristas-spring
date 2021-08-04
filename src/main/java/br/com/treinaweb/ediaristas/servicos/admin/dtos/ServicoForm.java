@@ -8,9 +8,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 
-import org.springframework.format.annotation.NumberFormat;
-import org.springframework.format.annotation.NumberFormat.Style;
-
 import br.com.treinaweb.ediaristas.servicos.enums.Icone;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,7 +25,6 @@ public class ServicoForm {
     @PositiveOrZero
     @DecimalMax("999.99")
     @NotNull
-    @NumberFormat(style = Style.CURRENCY, pattern = "000,00")
     private BigDecimal valorMinimo;
 
     @PositiveOrZero
@@ -49,7 +45,6 @@ public class ServicoForm {
     @PositiveOrZero
     @DecimalMax("999.99")
     @NotNull
-    @NumberFormat(style = Style.CURRENCY, pattern = "000,00")
     private BigDecimal valorQuarto;
 
     @PositiveOrZero
@@ -60,7 +55,6 @@ public class ServicoForm {
     @PositiveOrZero
     @DecimalMax("999.99")
     @NotNull
-    @NumberFormat(style = Style.CURRENCY, pattern = "000,00")
     private BigDecimal valorSala;
 
     @PositiveOrZero
@@ -71,7 +65,6 @@ public class ServicoForm {
     @PositiveOrZero
     @DecimalMax("999.99")
     @NotNull
-    @NumberFormat(style = Style.CURRENCY, pattern = "000,00")
     private BigDecimal valorBanheiro;
 
     @PositiveOrZero
@@ -82,7 +75,6 @@ public class ServicoForm {
     @PositiveOrZero
     @DecimalMax("999.99")
     @NotNull
-    @NumberFormat(style = Style.CURRENCY, pattern = "000,00")
     private BigDecimal valorCozinha;
 
     @PositiveOrZero
@@ -93,7 +85,6 @@ public class ServicoForm {
     @PositiveOrZero
     @DecimalMax("999.99")
     @NotNull
-    @NumberFormat(style = Style.CURRENCY, pattern = "000,00")
     private BigDecimal valorQuintal;
 
     @PositiveOrZero
@@ -104,7 +95,6 @@ public class ServicoForm {
     @PositiveOrZero
     @DecimalMax("999.99")
     @NotNull
-    @NumberFormat(style = Style.CURRENCY, pattern = "000,00")
     private BigDecimal valorOutros;
 
     @NotNull
