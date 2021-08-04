@@ -5,6 +5,7 @@ import java.security.Principal;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,12 +48,18 @@ public class UsuarioController {
     }
 
     @PostMapping("/cadastrar")
-    public String cadastrar(@Valid @ModelAttribute("cadastroForm") UsuarioCadastroForm cadastroForm, BindingResult resultado) {
+    public String cadastrar(
+        @Valid @ModelAttribute("cadastroForm") UsuarioCadastroForm cadastroForm,
+        BindingResult resultado,
+        RedirectAttributes attrs
+    ) {
         if (resultado.hasErrors()) {
             return "admin/usuarios/cadastro_form";
         }
 
         usuarioService.cadastrar(cadastroForm);
+
+        attrs.addFlashAttribute("alert", new FlashMessage("alert-success", "Usuário cadastrado com sucesso"));
 
         return "redirect:/admin/usuarios";
     }
@@ -77,7 +84,10 @@ public class UsuarioController {
 
     @PostMapping("/{id}/editar")
     public String editar(
-        @PathVariable Long id, @Valid @ModelAttribute("edicaoForm") UsuarioEdicaoForm edicaoForm, BindingResult resultado
+        @PathVariable Long id,
+        @Valid @ModelAttribute("edicaoForm") UsuarioEdicaoForm edicaoForm,
+        BindingResult resultado,
+        RedirectAttributes attrs
     ) {
         if (resultado.hasErrors()) {
             return "admin/usuarios/edicao_form";
@@ -85,12 +95,16 @@ public class UsuarioController {
 
         usuarioService.editar(edicaoForm, id);
 
+        attrs.addFlashAttribute("alert", new FlashMessage("alert-success", "Usuário editado com sucesso"));
+
         return "redirect:/admin/usuarios";
     }
 
     @GetMapping("/{id}/excluir")
-    public String excluir(@PathVariable Long id) {
+    public String excluir(@PathVariable Long id, RedirectAttributes attrs) {
         usuarioService.excluirPorId(id);
+
+        attrs.addFlashAttribute("alert", new FlashMessage("alert-success", "Usuário excluído com sucesso"));
 
         return "redirect:/admin/usuarios";
     }
@@ -109,7 +123,7 @@ public class UsuarioController {
         @Valid @ModelAttribute("alterarSenhaForm") AlterarSenhaFrom alterarSenhaFrom,
         BindingResult resultado,
         Principal principal,
-        RedirectAttributes attrs
+        ModelMap modelMap
     ) {
         if (resultado.hasErrors()) {
             return "/admin/usuarios/editar_senha";
@@ -117,11 +131,11 @@ public class UsuarioController {
 
         try {
             usuarioService.editarSenha(alterarSenhaFrom, principal);
+
+            modelMap.addAttribute("alert", new FlashMessage("alert-success", "Senha alterada com sucesso"));
         } catch (SenhaIncorretaException e) {
             resultado.rejectValue("senhaAntiga", "br.com.treinaweb.ediaristas.senhaAntiga.incorreta");
         }
-
-        attrs.addFlashAttribute("alert", new FlashMessage("alert-success", "Senha alterada com sucesso"));
 
         return "/admin/usuarios/editar_senha";
     }

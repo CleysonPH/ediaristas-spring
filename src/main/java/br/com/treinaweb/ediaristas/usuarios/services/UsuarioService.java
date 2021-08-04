@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.treinaweb.ediaristas.core.service.IService;
+import br.com.treinaweb.ediaristas.usuarios.exceptions.SenhaIncorretaException;
 import br.com.treinaweb.ediaristas.usuarios.exceptions.UsuarioNaoEncontradoException;
 import br.com.treinaweb.ediaristas.usuarios.models.Usuario;
 import br.com.treinaweb.ediaristas.usuarios.repositories.UsuarioRepository;
@@ -62,6 +63,18 @@ public class UsuarioService implements IService<Usuario, Long> {
 
         return usuarioRepository.findByEmail(email)
             .orElseThrow(() -> new UsuarioNaoEncontradoException(mensagemDeErro));
+    }
+
+    public void editarSenha(String email, String senhaAtual, String senhaNova) {
+        var usuario = buscarPorEmail(email);
+
+        if (!passwordEncoder.matches(senhaAtual, usuario.getSenha())) {
+            throw new SenhaIncorretaException("A senha antiga está incorreta");
+        }
+
+        usuario.setSenha(passwordEncoder.encode(senhaNova));
+
+        usuarioRepository.save(usuario);
     }
 
     private Usuario verificaSeExisteERetorna(Long id) {
