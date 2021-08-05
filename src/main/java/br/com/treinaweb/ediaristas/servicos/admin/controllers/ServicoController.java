@@ -64,10 +64,7 @@ public class ServicoController {
     public ModelAndView editar(@PathVariable Long id) {
         var modelAndView = new ModelAndView("admin/servicos/form");
 
-        var servico = servicoService.buscarFormPorId(id);
-        System.out.println(servico.getValorMinimo());
-
-        modelAndView.addObject("form", servico);
+        modelAndView.addObject("form", servicoService.buscarFormPorId(id));
 
         return modelAndView;
     }

@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import br.com.treinaweb.ediaristas.usuarios.admin.dtos.AlterarSenhaFrom;
+import br.com.treinaweb.ediaristas.usuarios.admin.dtos.AlterarSenhaForm;
 import br.com.treinaweb.ediaristas.usuarios.admin.dtos.UsuarioCadastroForm;
 import br.com.treinaweb.ediaristas.usuarios.admin.dtos.UsuarioEdicaoForm;
 import br.com.treinaweb.ediaristas.usuarios.admin.dtos.UsuarioResumo;
@@ -56,7 +56,7 @@ public class AdminUsuarioService {
         usuarioService.excluirPorId(id);
     }
 
-    public void editarSenha(AlterarSenhaFrom form, Principal principal) {
+    public void editarSenha(AlterarSenhaForm form, Principal principal) {
         var email = principal.getName();
         var senhaAtual = form.getSenhaAntiga();
         var senhaNova = form.getSenha();

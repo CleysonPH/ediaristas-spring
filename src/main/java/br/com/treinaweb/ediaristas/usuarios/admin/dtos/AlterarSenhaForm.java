@@ -12,7 +12,7 @@ import lombok.NonNull;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AlterarSenhaFrom implements UsuarioSenha {
+public class AlterarSenhaForm implements UsuarioSenha {
 
     @NotNull
     @NotEmpty

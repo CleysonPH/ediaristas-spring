@@ -19,7 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.treinaweb.ediaristas.auth.validators.UsuarioSenhaValidator;
 import br.com.treinaweb.ediaristas.dtos.FlashMessage;
-import br.com.treinaweb.ediaristas.usuarios.admin.dtos.AlterarSenhaFrom;
+import br.com.treinaweb.ediaristas.usuarios.admin.dtos.AlterarSenhaForm;
 import br.com.treinaweb.ediaristas.usuarios.admin.dtos.UsuarioCadastroForm;
 import br.com.treinaweb.ediaristas.usuarios.admin.dtos.UsuarioEdicaoForm;
 import br.com.treinaweb.ediaristas.usuarios.admin.services.AdminUsuarioService;
@@ -49,7 +49,7 @@ public class UsuarioController {
 
     @PostMapping("/cadastrar")
     public String cadastrar(
-        @Valid @ModelAttribute("cadastroForm") UsuarioCadastroForm cadastroForm,
+        @Valid @ModelAttribute("cadastroForm") UsuarioCadastroForm form,
         BindingResult resultado,
         RedirectAttributes attrs
     ) {
@@ -57,7 +57,7 @@ public class UsuarioController {
             return "admin/usuarios/cadastro_form";
         }
 
-        usuarioService.cadastrar(cadastroForm);
+        usuarioService.cadastrar(form);
 
         attrs.addFlashAttribute("alert", new FlashMessage("alert-success", "Usuário cadastrado com sucesso"));
 
@@ -85,7 +85,7 @@ public class UsuarioController {
     @PostMapping("/{id}/editar")
     public String editar(
         @PathVariable Long id,
-        @Valid @ModelAttribute("edicaoForm") UsuarioEdicaoForm edicaoForm,
+        @Valid @ModelAttribute("edicaoForm") UsuarioEdicaoForm form,
         BindingResult resultado,
         RedirectAttributes attrs
     ) {
@@ -93,7 +93,7 @@ public class UsuarioController {
             return "admin/usuarios/edicao_form";
         }
 
-        usuarioService.editar(edicaoForm, id);
+        usuarioService.editar(form, id);
 
         attrs.addFlashAttribute("alert", new FlashMessage("alert-success", "Usuário editado com sucesso"));
 
@@ -113,14 +113,14 @@ public class UsuarioController {
     public ModelAndView editarSenha() {
         var modelAndView = new ModelAndView("/admin/usuarios/editar_senha");
 
-        modelAndView.addObject("alterarSenhaForm", new AlterarSenhaFrom());
+        modelAndView.addObject("alterarSenhaForm", new AlterarSenhaForm());
 
         return modelAndView;
     }
 
     @PostMapping("editar-senha")
     public String editarSenha(
-        @Valid @ModelAttribute("alterarSenhaForm") AlterarSenhaFrom alterarSenhaFrom,
+        @Valid @ModelAttribute("alterarSenhaForm") AlterarSenhaForm form,
         BindingResult resultado,
         Principal principal,
         ModelMap modelMap
@@ -130,7 +130,7 @@ public class UsuarioController {
         }
 
         try {
-            usuarioService.editarSenha(alterarSenhaFrom, principal);
+            usuarioService.editarSenha(form, principal);
 
             modelMap.addAttribute("alert", new FlashMessage("alert-success", "Senha alterada com sucesso"));
         } catch (SenhaIncorretaException e) {
